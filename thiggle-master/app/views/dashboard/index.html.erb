@@ -1,0 +1,27 @@
+<ul class="nav nav-tabs">
+  <li class = "active"><%= link_to "Profile", dashboard_index_path %></li>
+  <li>
+    
+    <%= link_to "Mailbox", mailbox_dashboard_index_path %>
+  </li>
+  <li><%= link_to "Selling", my_posts_dashboard_index_path %></li>
+  <li><%= link_to "Saved", saved_posts_dashboard_index_path %></li>
+  <li><%= link_to "Account", account_dashboard_index_path %></li>
+</ul>
+
+<div style="margin-left: 100px">
+Username : <%= current_user.username%></br>
+Rep: <%= current_user.rep%></br>
+Date Joined: <%= to_date(current_user.created_at)%></br>
+Seen: <%= time_or_date(current_user.last_sign_in_at)%></br>
+</div>
+
+  
+
+
+
+
+
+
+
+

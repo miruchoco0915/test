@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
+<head>
+	<title>Thiggle!</title>  
+	<%= stylesheet_link_tag    "application", :media => "all" %>  
+	<%= javascript_include_tag "application" %> 
+  
+	<%= csrf_meta_tags %> 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42185689-1', 'www.thiggle.com');
+  ga('send', 'pageview');
+
+</script>
+</head>  
+<body>
+	<div class="navbar navbar-static-top">  
+		<div class="navbar-inner">  
+			<div class="container">  
+				<%= link_to "Thiggle", root_path, :class => "brand logo-font"%>
+				<div class= "pull-left logo-text" style="color:white; font-size:10px; margin-left: -33px; margin-top:25px">Classified Ads</div></br>
+				<ul class="nav nav-pills pull-left">
+					<li><%= link_to "Explore", posts_path %></li>
+					<li><%= link_to "New Post", new_post_path%></li>
+				
+				</ul>
+				<ul class="nav nav-pills pull-right">
+					<% if user_signed_in? %>
+					<li class="top-nav-pills"><%= link_to @display_username, mailbox_dashboard_index_path, :class => 'pull-right' %></li>
+			   		
+					<% if @messages_unread > 0 %>
+					<li><span class="badge badge-important"><%= link_to @messages_unread_text, mailbox_dashboard_index_path, class: 'mailbox-link'%></span></li>
+					<% end %>
+			    	<ul class="nav nav-pills">
+  <li class="dropdown">
+    <a class="dropdown-toggle"
+       data-toggle="dropdown"
+       href="#">
+        Chicago
+        <b class="caret"></b>
+      </a>
+    <ul class="dropdown-menu">
+      <li style="margin-left:25px">Houston - Beta</li>
+      <li style="margin-left:25px">Los Angeles - Beta</li>
+      <li style="margin-left:25px">New York City - Beta</li>
+      <li style="margin-left:25px">San Francisco - Beta</li>
+      
+
+    </ul>
+  </li>
+</ul>
+
+
+					<li><%= link_to "Sign Out", destroy_user_session_path %></li>
+					
+					<% else %>
+					
+  <li class="dropdown">
+    <a class="dropdown-toggle"
+       data-toggle="dropdown"
+       href="#">
+        Chicago
+        <b class="caret"></b>
+      </a>
+    <ul class="dropdown-menu">
+      <li style="margin-left:25px">Houston - Beta</li>
+      <li style="margin-left:25px">Los Angeles - Beta</li>
+      <li style="margin-left:25px">New York City - Beta</li>
+      <li style="margin-left:25px">San Francisco - Beta</li>
+      
+
+    </ul>
+  </li>
+
+					<li><%= link_to "Register", new_user_registration_path, :class => 'pull-right' %> </li>    
+				
+					
+					
+					<!-- Button to trigger modal -->
+					<li><a href="#login" role="button" onclick= "javascript:document.getElementById('input#user_login').focus()" class="button-small purple_light rounded3 pull-right" data-toggle="modal">Sign in</a></li>
+ 
+					<!-- Modal -->
+					<div id="login" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h3 id="myModalLabel">Sign in</h3>
+						</div>
+						<div class="modal-body">
+							<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+							<div style = "text-align:center"><%= f.label :login %>
+								<%= f.text_field :login, :autofocus => true, :style => "margin-left: 22px" %></div>
+
+								<div style = "text-align:center"><%= f.label :password %>
+									<%= f.password_field :password %></div>
+
+									<% if devise_mapping.rememberable? -%>
+									<div style = "text-align:right"><%= f.check_box :remember_me %><%=f.label :remember_me %></div>
+									<% end -%>
+
+  
+
+
+								</div>
+								<div class="modal-footer">
+									<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
+									<div class = "rows"><%= f.submit "SIGN IN", :class => 'button-small purple_normal rounded3' %><div> </div></div><% end %>
+								</div>
+							</div>
+							<% end %>
+
+						
+					</form>
+				
+				
+				</ul>
+	       
+
+			</div>  
+		
+		</div>  
+	</div> 
+
+
+
+
+	<%= yield %>
+
+</body>
+</html>

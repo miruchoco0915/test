@@ -1,0 +1,160 @@
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+
+
+<table class="table" >
+	<tr >
+		<td colspan = 2 style="text-align: center">
+			<div id="controls"></div>
+			<div id="loading"></div>
+			<div id="slideshow" class ="resizable"></div>
+		</td>
+	</tr>
+
+	<tr >
+		<td style="text-align: center">
+			<div id="thumbs" class= "navigation">
+				<ul class="thumbs">
+					<li> 
+						<a class="thumb" name="1" href="<%= @post.photo.url(:medium) %>" title="your image title">
+                <%= image_tag @post.photo.url(:thumb) %>
+            			</a>
+        			</li>
+					<% if @post.photo2.present? %>
+					<li> 
+						<a class="thumb" name="1" href="<%= @post.photo2.url(:medium) %>" title="your image title">
+                <%= image_tag @post.photo2.url(:thumb) %>
+            			</a>
+        			</li>
+        			<% end %>
+        			<% if @post.photo3.present? %>
+					<li> 
+						<a class="thumb" name="1" href="<%= @post.photo3.url(:medium) %>" title="your image title">
+                <%= image_tag @post.photo3.url(:thumb) %>
+            			</a>
+        			</li>
+        			<% end %>
+        			<% if @post.photo4.present? %>
+        			<li> 
+						<a class="thumb" name="1" href="<%= @post.photo3.url(:medium) %>" title="your image title">
+                <%= image_tag @post.photo4.url(:thumb) %>
+            			</a>
+        			</li>
+        			<% end %>
+
+    		</div>
+
+		</td>
+		<td class="showpost">
+			<div style = "font-size:22px">
+			<%= @post.title %></br>
+			</div>
+			<%= @post.category %> in <%= @post.location %> > <%= @post.street%><hr></br>
+			<%= @post.description %>
+
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+			jQuery(document).ready(function($) {
+				// We only want these styles applied when javascript is enabled
+				$('div.content').css('display', 'block');
+
+				// Initially set opacity on thumbs and add
+				// additional styling for hover effect on thumbs
+				var onMouseOutOpacity = 0.67;
+				$('#thumbs ul.thumbs li, div.navigation a.pageLink').opacityrollover({
+					mouseOutOpacity:   onMouseOutOpacity,
+					mouseOverOpacity:  1.0,
+					fadeSpeed:         'fast',
+					exemptionSelector: '.selected'
+				});
+				
+				// Initialize Advanced Galleriffic Gallery
+				var gallery = $('#thumbs').galleriffic({
+					delay:                     2500,
+					numThumbs:                 4,
+					preloadAhead:              4,
+					enableTopPager:            false,
+					enableBottomPager:         false,
+					imageContainerSel:         '#slideshow',
+					controlsContainerSel:      '#controls',
+					captionContainerSel:       '#caption',
+					loadingContainerSel:       '#loading',
+					renderSSControls:          false,
+					renderNavControls:         true,
+					playLinkText:              'Play Slideshow',
+					pauseLinkText:             'Pause Slideshow',
+					prevLinkText:              '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lsaquo; Previous Photo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+					nextLinkText:              '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next Photo &rsaquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+					nextPageLinkText:          '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next &rsaquo;',
+					prevPageLinkText:          '&lsaquo; Prev',
+					enableHistory:             false,
+					autoStart:                 false,
+					syncTransitions:           false,
+					defaultTransitionDuration: 700,
+					onSlideChange:             function(prevIndex, nextIndex) {
+						// 'this' refers to the gallery, which is an extension of $('#thumbs')
+						this.find('ul.thumbs').children()
+							.eq(prevIndex).fadeTo('fast', onMouseOutOpacity).end()
+							.eq(nextIndex).fadeTo('fast', 1.0);
+
+						// Update the photo index display
+						this.$captionContainer.find('div.photo-index')
+							.html('Photo '+ (nextIndex+1) +' of '+ this.data.length);
+					},
+					onPageTransitionOut:       function(callback) {
+						this.fadeTo('fast', 0.0, callback);
+					},
+					onPageTransitionIn:        function() {
+						var prevPageLink = this.find('a.prev').css('visibility', 'hidden');
+						var nextPageLink = this.find('a.next').css('visibility', 'hidden');
+						
+						// Show appropriate next / prev page links
+						if (this.displayedPage > 0)
+							prevPageLink.css('visibility', 'visible');
+
+						var lastPage = this.getNumPages() - 1;
+						if (this.displayedPage < lastPage)
+							nextPageLink.css('visibility', 'visible');
+
+						this.fadeTo('fast', 1.0);
+					}
+				});
+
+				/**************** Event handlers for custom next / prev page links **********************/
+
+				gallery.find('a.prev').click(function(e) {
+					gallery.previousPage();
+					e.preventDefault();
+				});
+
+				gallery.find('a.next').click(function(e) {
+					gallery.nextPage();
+					e.preventDefault();
+				});
+
+				/****************************************************************************************/
+
+			});
+		
+</script>
+
+
+
+
+
+
+
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

@@ -1,0 +1,9 @@
+
+<% if user_signed_in? %>
+
+<%= render 'form' %>
+<% else %>
+<%= render 'form_register' %>
+<% end %> 
+
+<!-- <%= link_to 'Back', posts_path %> -->
